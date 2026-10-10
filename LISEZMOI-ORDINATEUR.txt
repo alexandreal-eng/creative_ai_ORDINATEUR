@@ -1,0 +1,41 @@
+CREATIVE AI v8.0 - VERSION ORDINATEUR (Windows / Mac / Linux)
+================================================================
+Application 100 % hors ligne : bibliotheque de slash, slash personnels, historique, formats d'image.
+Icone : un slash lumineux dans un anneau d'objectif, avec une etincelle IA.
+
+AVANT DE COMMENCER
+- Extrais le zip (clic droit > "Extraire tout..."). Ne lance rien depuis l'interieur du zip.
+- Installe Node.js, version LTS : https://nodejs.org (une seule fois).
+
+OPTION 1 - Creer l'installateur .exe (recommande)
+  Double-clique sur  1-CREER-INSTALLATEUR-WINDOWS.bat
+  (Internet requis, 3 a 10 minutes la premiere fois.)
+  Le dossier "dist" s'ouvre : lance  Creative-AI-Setup-8.0.0.exe
+  -> raccourci sur le Bureau + menu Demarrer, avec l'icone, et lancement automatique a la fin.
+  Une version portable "Creative-AI-Portable-8.0.0.exe" (sans installation) est aussi creee.
+
+  SI CA ECHOUE (cas le plus frequent sous Windows) : active le MODE DEVELOPPEUR
+  (Parametres > Confidentialite et securite > Pour les developpeurs > Mode developpeur),
+  ou fais clic droit sur le .bat > "Executer en tant qu'administrateur", puis relance.
+  Le script retente seul en "mode compatible" ; dans ce cas l'icone n'est pas integree au .exe :
+  lance ensuite l'option 2 pour avoir un raccourci avec la belle icone.
+
+OPTION 2 - Raccourci Bureau sans creer de .exe
+  Double-clique sur  3-CREER-RACCOURCI-BUREAU.bat
+  -> un raccourci "Creative AI" avec l'icone apparait sur le Bureau. Ne deplace pas ensuite le dossier.
+  Pour juste essayer : 0-TESTER-SANS-INSTALLER.bat
+
+OPTION 3 - Compilation en ligne, sans rien installer sur ton PC
+  1. Cree un compte gratuit sur https://github.com et un nouveau depot.
+  2. Envoie-y tout le contenu du dossier (y compris le dossier cache ".github").
+  3. Onglet "Actions" > "Creative AI Ordinateur" > "Run workflow".
+  4. Telecharge "Creative-AI-Windows" (le .exe) en bas de la page de l'execution.
+
+MAC / LINUX : ouvre un terminal dans le dossier, puis "npm install" et "npm run dist:mac"
+ou "npm run dist:linux". (Mac : application non signee, au premier lancement clic droit > Ouvrir.)
+
+ACCES AUX FICHIERS
+Les sauvegardes et exports utilisent la fenetre Windows "Enregistrer sous" / "Ouvrir" : tu choisis
+toi-meme le dossier, l'application n'accede a aucun autre fichier. Seule l'autorisation du
+presse-papiers est accordee (copier les slash). Aucune donnee n'est envoyee sur Internet.
+Pense a faire une sauvegarde (Parametres > Sauvegarder mes donnees) avant de desinstaller.
