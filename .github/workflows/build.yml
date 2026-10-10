@@ -1,0 +1,50 @@
+# Compile l'installateur Windows (.exe), Linux et Mac.
+# Utilisation : onglet "Actions" du depot GitHub > "Creative AI Ordinateur" > "Run workflow".
+name: Creative AI Ordinateur
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+jobs:
+  windows:
+    runs-on: windows-latest
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install
+      - run: npm run dist:win
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Creative-AI-Windows
+          path: dist/*.exe
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install
+      - run: npm run dist:linux
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Creative-AI-Linux
+          path: |
+            dist/*.AppImage
+            dist/*.deb
+  mac:
+    runs-on: macos-latest
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm install
+      - run: npm run dist:mac
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Creative-AI-Mac
+          path: dist/*.dmg
