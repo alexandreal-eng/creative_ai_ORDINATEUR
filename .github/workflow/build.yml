@@ -1,0 +1,79 @@
+# Compile l'installateur Windows (.exe), Linux (AppImage) et Mac (.dmg).
+# Utilisation : onglet "Actions" > "Creative AI Ordinateur" > "Run workflow".
+name: Creative AI Ordinateur
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: read
+env:
+  CSC_IDENTITY_AUTO_DISCOVERY: "false"
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verifier les fichiers du projet
+        shell: bash
+        run: |
+          echo "Contenu a la racine du depot :" && ls -la
+          for f in package.json main.js preload.js public/index.html build/icon.ico build/icon.png build/icon.icns; do
+            if [ ! -f "$f" ]; then
+              echo "::error::Fichier manquant a la racine du depot : $f. Envoie le CONTENU du dossier (pas le dossier lui-meme) et verifie que le dossier build est bien envoye."
+              exit 1
+            fi
+          done
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install
+      - name: Creer l'installateur Windows
+        shell: bash
+        run: |
+          npx electron-builder --win --publish never || {
+            echo "Premiere tentative echouee, nouvelle tentative en mode compatible..."
+            npx electron-builder --win --publish never --config.win.signAndEditExecutable=false
+          }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Creative-AI-Windows
+          path: dist/*.exe
+          if-no-files-found: error
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verifier les fichiers du projet
+        run: |
+          ls -la
+          for f in package.json main.js preload.js public/index.html build/icon.png; do
+            [ -f "$f" ] || { echo "::error::Fichier manquant a la racine du depot : $f"; exit 1; }
+          done
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install
+      - run: npx electron-builder --linux AppImage --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Creative-AI-Linux
+          path: dist/*.AppImage
+          if-no-files-found: error
+  mac:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verifier les fichiers du projet
+        run: |
+          ls -la
+          for f in package.json main.js preload.js public/index.html build/icon.icns; do
+            [ -f "$f" ] || { echo "::error::Fichier manquant a la racine du depot : $f"; exit 1; }
+          done
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install
+      - run: npx electron-builder --mac dmg --publish never
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Creative-AI-Mac
+          path: dist/*.dmg
+          if-no-files-found: error
